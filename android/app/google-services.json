@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464556550842",
+    "project_id": "fir-authv1-i",
+    "storage_bucket": "fir-authv1-i.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464556550842:android:7b0a2ac5561143f743f083",
+        "android_client_info": {
+          "package_name": "com.example.firebase_authv1_isidro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6uTzFA9_xvXWxyfxrM71JWLigJck9UXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
