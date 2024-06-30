@@ -3,24 +3,88 @@ import 'package:firebase_authv1_isidro/components/my_button.dart';
 import 'package:firebase_authv1_isidro/components/my_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn(BuildContext context) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
+  void signUserIn() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+      Navigator.pop(context);
     } catch (e) {
-      scaffoldMessenger.showSnackBar(
-        SnackBar(content: Text('Login failed: ${e.toString()}')),
-      );
+      Navigator.pop(context);
+      if (e is FirebaseAuthException) {
+        String errorMessage = getMessageFromErrorCode(e.code);
+        _showDialog("Error", errorMessage);
+      } else {
+        _showDialog("Error", "An error occurred: ${e.toString()}");
+      }
     }
+  }
+
+  String getMessageFromErrorCode(String errorCode) {
+    switch (errorCode) {
+      case "account-exists-with-different-credential":
+      case "email-already-in-use":
+        return "Email already used. Go to login page.";
+      case "ERROR_WRONG_PASSWORD":
+      case "wrong-password":
+        return "Wrong password.";
+      case "ERROR_USER_NOT_FOUND":
+      case "user-not-found":
+        return "No user found with this email.";
+      case "ERROR_USER_DISABLED":
+      case "user-disabled":
+        return "User disabled.";
+      case "ERROR_TOO_MANY_REQUESTS":
+        return "Too many requests to log into this account.";
+      case "ERROR_OPERATION_NOT_ALLOWED":
+        return "Server error, please try again later.";
+      case "ERROR_INVALID_EMAIL":
+      case "invalid-email":
+        return "Email address is invalid.";
+      default:
+        return "Login failed. Please try again.";
+    }
+  }
+
+  void _showDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            ElevatedButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -80,7 +144,7 @@ class LoginScreen extends StatelessWidget {
                   buttonColor: const Color(0xFF2B2E38),
                   textColor: const Color(0xFFFFFFFF),
                   borderColor: const Color(0xFF2B2E38),
-                  onTap: () => signUserIn(context),
+                  onTap: signUserIn,
                 ),
                 const SizedBox(height: 26),
                 MyButton(

@@ -18,12 +18,12 @@ class AuthPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasData) {
-          return HomeScreen();
+          return const HomeScreen();
           // Future.microtask(
           //     () => Navigator.of(context).pushReplacementNamed('/home'));
           // return const SizedBox.shrink();
         } else {
-          return LoginScreen();
+          return const LoginScreen();
         }
       },
     );
