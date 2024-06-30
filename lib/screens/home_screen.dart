@@ -5,7 +5,7 @@ import 'package:firebase_authv1_isidro/components/my_button.dart';
 import 'package:firebase_authv1_isidro/screens/auth_page.dart'; // Import AuthPage
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   HomeScreenState createState() => HomeScreenState();
@@ -34,6 +34,8 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser; // Access currentUser here
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -81,17 +83,25 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 20),
           const Text(
-            'Meet our penguins',
+            'Meet our penguins,',
             style: TextStyle(
               fontSize: 24,
-              fontWeight: FontWeight.bold,
               color: Color(0xFF2B2E38),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            user != null ? user.email! : '',
+            style: const TextStyle(
+              fontSize: 20,
+              color: Color(0xFF2B2E38),
+              fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 90),
           MyButton(
-            buttonText: "Sign Out",
+            buttonText: "Logout",
             buttonColor: const Color.fromARGB(255, 218, 218, 218),
             textColor: const Color(0xFF2B2E38),
             borderColor: const Color.fromARGB(255, 218, 218, 218),

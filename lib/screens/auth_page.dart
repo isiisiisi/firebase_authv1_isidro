@@ -18,7 +18,7 @@ class AuthPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasData) {
-          return const HomeScreen();
+          return HomeScreen();
           // Future.microtask(
           //     () => Navigator.of(context).pushReplacementNamed('/home'));
           // return const SizedBox.shrink();
