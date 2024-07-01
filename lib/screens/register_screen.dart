@@ -3,19 +3,25 @@ import 'package:firebase_authv1_isidro/components/my_button.dart';
 import 'package:firebase_authv1_isidro/components/my_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final VoidCallback onTap;
-  const LoginScreen({super.key, required this.onTap});
+  const RegisterScreen({super.key, required this.onTap});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void signUserIn() async {
+  void signUserUp() async {
+    if (passwordController.text != confirmPasswordController.text) {
+      _showDialog("Error", "Passwords do not match.");
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -26,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
@@ -64,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       case "invalid-email":
         return "Email address is invalid.";
       default:
-        return "Login failed. Please try again.";
+        return "Registration failed. Please try again.";
     }
   }
 
@@ -97,16 +103,16 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(height: 80),
+                const SizedBox(height: 60),
                 SizedBox(
-                  height: 150.0,
+                  height: 100.0,
                   child: Image.asset(
                     'lib/assets/images/penguin.png',
                   ),
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Welcome to PenguinLand',
+                  'Create an account',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -139,17 +145,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 23),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8.0),
+                    MyTextField(
+                      controller: confirmPasswordController,
+                      hintText: 'Confirm Password',
+                      obscureText: true,
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 55),
                 MyButton(
-                  buttonText: "Login",
+                  buttonText: "Sign Up",
                   buttonColor: const Color(0xFF2B2E38),
                   textColor: const Color(0xFFFFFFFF),
                   borderColor: const Color(0xFF2B2E38),
-                  onTap: signUserIn,
+                  onTap: signUserUp,
                 ),
                 const SizedBox(height: 26),
                 MyButton(
-                  buttonText: "Sign Up",
+                  buttonText: "Login",
                   buttonColor: const Color.fromARGB(255, 255, 255, 255),
                   textColor: const Color(0xFF2B2E38),
                   borderColor: const Color.fromARGB(255, 255, 255, 255),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_authv1_isidro/screens/login_screen.dart';
+// import 'package:firebase_authv1_isidro/screens/login_screen.dart';
+import 'package:firebase_authv1_isidro/screens/loginorregister_screen.dart';
 import 'package:flutter/material.dart';
 import '/screens/home_screen.dart';
 
@@ -23,7 +24,7 @@ class AuthPage extends StatelessWidget {
           //     () => Navigator.of(context).pushReplacementNamed('/home'));
           // return const SizedBox.shrink();
         } else {
-          return const LoginScreen();
+          return const LoginOrRegisterPage();
         }
       },
     );
